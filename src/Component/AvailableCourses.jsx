@@ -6,18 +6,22 @@ const AvailableCourses = () => {
     const [enrolledIds, setEnrolledIds] = useState([]); 
     const [loading, setLoading] = useState(true);
 
+    
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
                 
-               
-                const coursesRes = await axios.get('http://localhost:8000/api/user/all-courses', {
+                // ✅ Updated URL (all-courses)
+                const coursesRes = await axios.get(`${API_BASE}/api/user/all-courses`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setCourses(Array.isArray(coursesRes.data) ? coursesRes.data : coursesRes.data.courses);
 
-                const enrollRes = await axios.get('http://localhost:8000/api/user/my-enrollments', {
+                // ✅ Updated URL (my-enrollments)
+                const enrollRes = await axios.get(`${API_BASE}/api/user/my-enrollments`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const myEnrollments = enrollRes.data || [];
@@ -30,12 +34,12 @@ const AvailableCourses = () => {
             }
         };
         fetchData();
-    }, []);
-
+    }, []); 
     const handleEnroll = async (courseId) => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.post('http://localhost:8000/api/user/enroll', 
+         
+            const res = await axios.post(`${API_BASE}/api/user/enroll`, 
                 { courseId }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
@@ -150,7 +154,7 @@ const styles = {
     },
     enrollBtn: {
         width: 'fit-content',
-        backgroundColor: '#2c3e50', // Dark Navy like your style
+        backgroundColor: '#2c3e50', 
         color: 'white',
         padding: '10px 24px',
         border: 'none',

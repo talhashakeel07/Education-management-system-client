@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // 1. Navigate import kiya
+import { useNavigate } from 'react-router-dom';
 
 const CourseCatalog = () => {
     const [courses, setCourses] = useState([]);
-    const [enrolledIds, setEnrolledIds] = useState([]); // Enrolled courses track karne ke liye
+    const [enrolledIds, setEnrolledIds] = useState([]); 
     const [loading, setLoading] = useState(true);
     const [notif, setNotif] = useState({ show: false, msg: '', type: '' });
     
-    const navigate = useNavigate(); // 2. Navigate hook initialize kiya
+    const navigate = useNavigate();
+
+    // ✅ Render URL Setup
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     const showNotification = (msg, type = 'success') => {
         setNotif({ show: true, msg, type });
@@ -19,19 +22,20 @@ const CourseCatalog = () => {
         const fetchInitialData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                // Courses fetch karna
-                const res = await axios.get('http://localhost:8000/api/user/all-courses', {
+                
+                // ✅ Updated URL (all-courses)
+                const res = await axios.get(`${API_BASE}/api/user/all-courses`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = res.data.courses || res.data;
                 setCourses(Array.isArray(data) ? data : []);
 
-                // 3. User ke enrolled courses fetch karna taake button change ho sake
-                const enrolledRes = await axios.get('http://localhost:8000/api/user/my-courses', {
+                // ✅ Updated URL (my-courses)
+                const enrolledRes = await axios.get(`${API_BASE}/api/user/my-courses`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const myCourses = enrolledRes.data.courses || enrolledRes.data;
-                setEnrolledIds(myCourses.map(c => c._id)); // Sirf IDs save kar li
+                setEnrolledIds(myCourses.map(c => c._id));
 
                 setLoading(false);
             } catch (err) {
@@ -50,12 +54,13 @@ const CourseCatalog = () => {
                 showNotification("Please login to enroll.", "error");
                 return;
             }
-            const res = await axios.post('http://localhost:8000/api/user/enroll', 
+            // ✅ Updated URL (enroll)
+            const res = await axios.post(`${API_BASE}/api/user/enroll`, 
                 { courseId }, 
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             showNotification(res.data.msg || "Successfully enrolled!");
-            setEnrolledIds([...enrolledIds, courseId]); // Button foran update karne ke liye
+            setEnrolledIds([...enrolledIds, courseId]); 
         } catch (err) {
             showNotification(err.response?.data?.msg || "Enrollment failed.", "error");
         }

@@ -8,11 +8,15 @@ const CourseView = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
     useEffect(() => {
         const fetchDetails = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get(`http://localhost:8000/api/user/course/${id}`, {
+                // ✅ Updated endpoint using API_BASE
+                const res = await axios.get(`${API_BASE}/api/user/course/${id}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setCourse(res.data.course || res.data);
@@ -23,7 +27,7 @@ const CourseView = () => {
             }
         };
         fetchDetails();
-    }, [id]);
+    }, []);
 
     if (loading) return <div style={styles.loader}>Loading...</div>;
     if (!course) return <div style={styles.loader}>Course not found.</div>;
@@ -51,7 +55,7 @@ const CourseView = () => {
                     <div style={styles.detailsSection}>
                         <h3 style={styles.sectionTitle}>About this Course</h3>
                         <p style={styles.description}>
-                            {course.description || "Welcome to your Education Manegment System dashboard. Here you can access all the lectures and resources for this specific course."}
+                            {course.description || "Welcome to your Education Management System dashboard. Here you can access all the lectures and resources for this specific course."}
                         </p>
                         
                         <div style={styles.instructorInfo}>

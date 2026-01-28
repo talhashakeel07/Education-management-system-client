@@ -11,7 +11,9 @@ const CourseAdd = () => {
   });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
-  const base = 'http://localhost:8000/api/user';
+
+  // ✅ FIXED: Ab ye Render URL use karega agar mojood ho
+  const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/user`;
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -90,6 +92,7 @@ const CourseAdd = () => {
   );
 };
 
+// Styles (Same as yours)
 const container = { display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px', minHeight: '70vh', background: '#f5f7fb' };
 const card = { width: '520px', background: '#fff', padding: '24px', borderRadius: '10px', boxShadow: '0 6px 18px rgba(23,24,25,0.08)' };
 const title = { margin: '0 0 12px 0', textAlign: 'center', color: '#222' };

@@ -5,25 +5,37 @@ const StudentAdd = () => {
   const [form, setForm] = useState({ name: '', email: '', rollNumber: '', course: '' });
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(null);
-  const base = 'http://localhost:8000/api/user';
+
+  // ✅ FIXED: Render URL setup
+  const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/user`;
 
   const handleChange = e => setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMsg(null);
-    if (!form.name || !form.email) { setMsg({ type: 'error', text: 'Name and Email required' }); return; }
+    if (!form.name || !form.email) { 
+      setMsg({ type: 'error', text: 'Name and Email required' }); 
+      return; 
+    }
+    
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
       if (!token) throw new Error('Login required');
+
       const res = await axios.post(`${base}/add-student`, form, {
         headers: { Authorization: `Bearer ${token}` }
       });
+
       setMsg({ type: 'success', text: res.data.msg || 'Student added successfully' });
-      setForm({ name: '', email: '', course: '', phone: '' });
+      // Reset form
+      setForm({ name: '', email: '', course: '', rollNumber: '' });
     } catch (err) {
-      setMsg({ type: 'error', text: err.response?.data?.msg || err.message || 'Failed to add student' });
+      setMsg({ 
+        type: 'error', 
+        text: err.response?.data?.msg || err.message || 'Failed to add student' 
+      });
     } finally {
       setLoading(false);
     }
@@ -35,7 +47,11 @@ const StudentAdd = () => {
         <h2 style={title}>Add Student</h2>
 
         {msg && (
-          <div style={{ ...alertStyle, background: msg.type === 'success' ? '#e6ffed' : '#ffe6e6', color: msg.type === 'success' ? '#056a29' : '#a10f0f' }}>
+          <div style={{ 
+            ...alertStyle, 
+            background: msg.type === 'success' ? '#e6ffed' : '#ffe6e6', 
+            color: msg.type === 'success' ? '#056a29' : '#a10f0f' 
+          }}>
             {msg.text}
           </div>
         )}

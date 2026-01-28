@@ -7,14 +7,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    // Render Backend URL setup
+    // ✅ Render Backend URL setup
     // Agar .env mein link nahi hoga toh ye localhost:8000 use karega
     const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Updated line to use Render URL
+            // ✅ Updated line to use dynamic API_BASE_URL
             const res = await axios.post(`${API_BASE_URL}/api/user/login`, { email, password });
             
             console.log("Login Response Data:", res.data);
@@ -85,7 +85,7 @@ const Login = () => {
     );
 };
 
-// --- MODERN STYLES ---
+// --- Your Original Modern Styles Kept Exactly As They Were ---
 const containerStyle = { display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#f8fafc' };
 const formStyle = { padding: '40px', borderRadius: '20px', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)', width: '400px', background:'#fff', border: '1px solid #e2e8f0' };
 const inputGroupStyle = { marginBottom: '25px' };

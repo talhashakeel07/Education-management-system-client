@@ -7,14 +7,16 @@ const TeacherCourses = () => {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
     useEffect(() => {
         const fetchAssignedCourses = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:8000/api/user/assigned-courses', {
+                
+                const res = await axios.get(`${API_BASE}/api/user/assigned-courses`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                // Backend agar { courses: [...] } bhej raha hai ya direct array
                 setCourses(res.data.courses || res.data);
                 setLoading(false);
             } catch (err) {
@@ -23,7 +25,7 @@ const TeacherCourses = () => {
             }
         };
         fetchAssignedCourses();
-    }, []);
+    }, []); 
 
     if (loading) return <div style={styles.loader}>Loading Assigned Courses...</div>;
 
@@ -60,7 +62,7 @@ const TeacherCourses = () => {
     );
 };
 
-// Modern CSS (Matching your theme)
+// --- Your Original Modern CSS Kept Exactly As It Was ---
 const styles = {
     container: { padding: '40px 5%', background: '#f8fafc', minHeight: '100vh' },
     header: { marginBottom: '30px' },

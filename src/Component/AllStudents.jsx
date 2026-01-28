@@ -4,7 +4,9 @@ import axios from 'axios';
 const AllStudents = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const base = 'http://localhost:8000/api/user';
+
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const base = `${API_BASE}/api/user`;
 
     useEffect(() => {
         fetchStudents();
@@ -32,7 +34,6 @@ const AllStudents = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 alert("Student Deleted!");
-                // List ko update karein bina refresh kiye
                 setStudents(students.filter(student => student._id !== id));
             } catch (err) {
                 alert("Delete fail: " + (err.response?.data?.msg || "Server Error"));
@@ -43,7 +44,6 @@ const AllStudents = () => {
     if (loading) return <div className="page-wrapper"><h2>Loading Students...</h2></div>;
 
     return (
-        // Padding kam kar di hai (10px sides par) taake margin kam ho jaye
         <div style={{ padding: '20px 10px', width: '100%' }}> 
             <h1 style={{ marginBottom: '2%', paddingLeft: '18%' }}>Registered Students</h1>
             
@@ -80,14 +80,14 @@ const AllStudents = () => {
     );
 };
 
-// --- Styles ---
+// --- Styles (Same as yours) ---
 const tableContainerStyle = {
     background: 'white',
     borderRadius: '20px',
     boxShadow: '0 2px 10px rgba(29, 22, 22, 0.1)',
     overflowX: 'auto',
     margin: '0 auto',
-    width: '65%' // Isse left/right spacing kam ho jayegi
+    width: '65%'
 };
 
 const thStyle = { padding: '15px', textAlign: 'left' };

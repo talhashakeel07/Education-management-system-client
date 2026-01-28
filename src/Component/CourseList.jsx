@@ -11,11 +11,12 @@ const CourseList = () => {
     
     const token = localStorage.getItem('token');
     const userRole = localStorage.getItem('role'); 
-    const base = 'http://localhost:8000/api/user';
+
+    const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/user`;
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, []); 
 
     const fetchData = async () => {
         try {

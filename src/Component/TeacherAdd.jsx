@@ -11,7 +11,9 @@ const TeacherAdd = () => {
     });
     const [loading, setLoading] = useState(false);
     const [msg, setMsg] = useState(null);
-    const base = 'http://localhost:8000/api/user';
+
+    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const base = `${API_BASE}/api/user`;
 
     const handleChange = e => {
         const { name, value } = e.target;
@@ -89,6 +91,7 @@ const TeacherAdd = () => {
     );
 };
 
+// --- Your Original Styles Kept Exactly As They Were ---
 const container = { 
     display: 'flex', 
     alignItems: 'center', 

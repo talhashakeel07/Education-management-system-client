@@ -4,7 +4,9 @@ import axios from 'axios';
 const StudentCourses = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const base = 'http://localhost:8000/api/user';
+  
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+  const base = `${API_BASE}/api/user`;
 
   useEffect(() => {
     const fetchCourses = async () => {

@@ -6,7 +6,8 @@ const CourseEdit = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const base = 'http://localhost:8000/api/user';
+    
+    const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/user`;
 
     const [formData, setFormData] = useState({
         title: '',
@@ -47,7 +48,7 @@ const CourseEdit = () => {
             }
         };
         fetchData();
-    }, [id, token]);
+    }, [id, token, base]); // Added base to dependency array
 
     const handleTeacherChange = (e) => {
         const selectedId = e.target.value;

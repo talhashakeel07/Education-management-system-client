@@ -4,7 +4,9 @@ import axios from 'axios';
 const AllTeachers = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const base = 'http://localhost:8000/api/user';
+  
+  const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/user`;
+  
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const AllTeachers = () => {
       const res = await axios.get(`${base}/all-teachers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-     
+      
       setTeachers(Array.isArray(res.data) ? res.data : res.data.teachers || []);
       setLoading(false);
     } catch (err) {

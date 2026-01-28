@@ -10,11 +10,13 @@ const MyEnorolledCourses = () => {
     const navigate = useNavigate(); 
     const userRole = localStorage.getItem('role'); 
 
+    // ✅ FIXED: Render URL setup
+    const base = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api`; 
+
     useEffect(() => {
         const fetchContent = async () => {
             const token = localStorage.getItem('token');
-            const base = 'http://localhost:8000/api'; 
-
+            
             if (!token) {
                 setError("Aap logged in nahi hain. Please login karein.");
                 setLoading(false);
@@ -41,8 +43,7 @@ const MyEnorolledCourses = () => {
         };
 
         fetchContent();
-    }, [userRole]);
-
+    }, []);
     
     const handleGoToCourse = (courseId) => {
         if (!courseId) {
